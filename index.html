@@ -58,7 +58,8 @@
   button:hover { background: var(--bg); }
   button.active { font-weight: 700; border-color: var(--teal); color: var(--teal); background: #eef8f9; }
   button:disabled { opacity: .4; cursor: not-allowed; }
-  input[type=range] { cursor: pointer; width: 220px; accent-color: var(--teal); }
+  input[type=range] { cursor: pointer; width: 180px; accent-color: var(--teal); }
+  .controls .kayd { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
   select { font-size: 13px; padding: 4px 8px; border: 1.5px solid #ddd; border-radius: 6px; font-family: inherit; background: #fff; }
 
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -359,15 +360,16 @@
       <div class="eq c" style="display:flex;align-items:center;justify-content:center">E(α̂<sub>2</sub>) = β<sub>2</sub> + β<sub>3</sub>·b<sub>32</sub><span class="lbl">b<sub>32</sub>: X<sub>3</sub>'ün X<sub>2</sub>'ye regresyonundaki eğim</span></div>
     </div>
     <h4 style="margin:1.1rem 0 .3rem;color:var(--navy)">Simülasyon: X<sub>3</sub> dışlanınca α̂<sub>2</sub> nereye gider?</h4>
-    <p>Gerçek β<sub>2</sub> = 1. Her örnekte (n = 50) hem doğru model hem de X<sub>3</sub>'ün dışlandığı model tahmin ediliyor. β<sub>3</sub>'ü ve X<sub>2</sub> ile X<sub>3</sub> arasındaki korelasyonu değiştirin.</p>
+    <p>Gerçek β<sub>2</sub>'yi kaydırıcıyla seçin (varsayılan 0.65). Her örnekte (n = 50) hem doğru model hem de X<sub>3</sub>'ün dışlandığı model tahmin ediliyor. β<sub>3</sub>'ü ve X<sub>2</sub> ile X<sub>3</sub> arasındaki korelasyonu değiştirin.</p>
     <div class="controls">
-      <label>β<sub>3</sub> = <b id="d-b3-l">1.0</b></label><input type="range" id="d-b3" min="-2" max="2" step="0.1" value="1">
-      <label>r<sub>23</sub> = <b id="d-r-l">0.5</b></label><input type="range" id="d-r" min="-0.9" max="0.9" step="0.1" value="0.5">
+      <span class="kayd"><label>Gerçek β<sub>2</sub> = <b id="d-b2-l">0.65</b></label><input type="range" id="d-b2" min="-1" max="2" step="0.05" value="0.65"></span>
+      <span class="kayd"><label>β<sub>3</sub> = <b id="d-b3-l">1.0</b></label><input type="range" id="d-b3" min="-2" max="2" step="0.1" value="1"></span>
+      <span class="kayd"><label>r<sub>23</sub> = <b id="d-r-l">0.5</b></label><input type="range" id="d-r" min="-0.9" max="0.9" step="0.1" value="0.5"></span>
       <button id="d-cek">500 örnek çek</button>
     </div>
     <div class="chart-wrap kwn"><canvas id="c-dis"></canvas></div>
     <div class="stat-grid">
-      <div class="stat-card"><div class="label">Gerçek β₂</div><div class="value">1.000</div></div>
+      <div class="stat-card"><div class="label">Gerçek β₂</div><div class="value" id="d-gercek">0.650</div></div>
       <div class="stat-card"><div class="label">Doğru modelde β̂₂ ortalaması</div><div class="value" id="d-uz">-</div></div>
       <div class="stat-card"><div class="label">Dışlanan modelde α̂₂ ortalaması</div><div class="value" id="d-ks">-</div></div>
       <div class="stat-card"><div class="label">Teorik sapma β₃·b₃₂</div><div class="value" id="d-teo">-</div></div>
@@ -399,9 +401,10 @@
       <div class="eq">Doğru: Y = β<sub>1</sub> + β<sub>2</sub>X<sub>2</sub> + u</div>
       <div class="eq">Tahmin: Y = α<sub>1</sub> + α<sub>2</sub>X<sub>2</sub> + α<sub>3</sub>X<sub>3</sub> + v,&nbsp; v = u (β<sub>3</sub> = 0)</div>
     </div>
-    <p>X<sub>3</sub>'ün gerçek katsayısı sıfırdır. Gereksiz yere modele eklenince α̂<sub>2</sub>'ye ne olur?</p>
+    <p>X<sub>3</sub>'ün gerçek katsayısı sıfırdır; β<sub>2</sub>'yi kaydırıcıyla seçin. Gereksiz yere modele eklenince α̂<sub>2</sub>'ye ne olur?</p>
     <div class="controls">
-      <label>r<sub>23</sub> = <b id="g-r-l">0.8</b></label><input type="range" id="g-r" min="0" max="0.95" step="0.05" value="0.8">
+      <span class="kayd"><label>Gerçek β<sub>2</sub> = <b id="g-b2-l">0.65</b></label><input type="range" id="g-b2" min="-1" max="2" step="0.05" value="0.65"></span>
+      <span class="kayd"><label>r<sub>23</sub> = <b id="g-r-l">0.8</b></label><input type="range" id="g-r" min="0" max="0.95" step="0.05" value="0.8"></span>
       <button id="g-cek">500 örnek çek</button>
     </div>
     <div class="chart-wrap kwn"><canvas id="c-gerek"></canvas></div>
@@ -411,7 +414,7 @@
       <div class="stat-card"><div class="label">Varyans oranı (sim.)</div><div class="value" id="g-oran">-</div></div>
       <div class="stat-card"><div class="label">Teorik 1/(1 − r²)</div><div class="value" id="g-teo">-</div></div>
     </div>
-    <div class="info-box">İki dağılım da gerçek değer 1'in etrafında: tahminci <b>sapmasız ve tutarlıdır</b>, σ² doğru tahmin edilir, testler geçerlidir. Ama X<sub>2</sub> ile X<sub>3</sub> ilişkiliyse varyans büyür: tahminci <b>etkin değildir</b>.</div>
+    <div class="info-box">İki dağılım da gerçek β<sub>2</sub> değerinin etrafında: tahminci <b>sapmasız ve tutarlıdır</b>, σ² doğru tahmin edilir, testler geçerlidir. Ama X<sub>2</sub> ile X<sub>3</sub> ilişkiliyse varyans büyür: tahminci <b>etkin değildir</b>.</div>
     <h4 style="margin:1.4rem 0 .3rem;color:var(--navy)">Özet tablo (hücreye tıklayın)</h4>
     <table class="sonuc-tablo" style="max-width:700px">
       <tr><th>Tahmin edilen ↓ / Doğru model →</th><th>Y = β₁ + β₂X₂ + u</th><th>Y = β₁ + β₂X₂ + β₃X₃ + u</th></tr>
@@ -501,10 +504,11 @@
     <div class="eq c">q̂ = β̂₁ − β̂₀, &nbsp; m = <span class="frac"><span>q̂²</span><span>Var(q̂)</span></span> = <span class="frac"><span>q̂² r²</span><span>Var(β̂₀)(1 − r²)</span></span> ~ χ²₁ <span class="lbl">basit regresyon; r = corr(X, Z)</span></div>
     <div class="warn-box"><b>Dikkat:</b> IV tahmini, Y'nin Z'ye regresyonu değildir. Y yine X'e regres edilir; Z yalnızca X'in “temiz” kısmını ayıklamak için kullanılır.</div>
     <h4 style="margin:1.2rem 0 .3rem;color:var(--navy)">Simülasyon: EKK mi, IV mi?</h4>
-    <p>Gerçek β = 1, n = 100. X'in hata terimiyle korelasyonunu (içsellik) ve aracın gücünü değiştirin.</p>
+    <p>Gerçek β'yı kaydırıcıyla seçin (varsayılan 0.65), n = 100. X'in hata terimiyle korelasyonunu (içsellik) ve aracın gücünü değiştirin.</p>
     <div class="controls">
-      <label>corr(X, u) = <b id="h-rho-l">0.5</b></label><input type="range" id="h-rho" min="0" max="0.8" step="0.1" value="0.5">
-      <label>Araç gücü corr(X, Z) = <b id="h-pi-l">0.6</b></label><input type="range" id="h-pi" min="0.05" max="0.9" step="0.05" value="0.6">
+      <span class="kayd"><label>Gerçek β = <b id="h-b-l">0.65</b></label><input type="range" id="h-b" min="-1" max="2" step="0.05" value="0.65"></span>
+      <span class="kayd"><label>corr(X, u) = <b id="h-rho-l">0.5</b></label><input type="range" id="h-rho" min="0" max="0.8" step="0.1" value="0.5"></span>
+      <span class="kayd"><label>Araç gücü corr(X, Z) = <b id="h-pi-l">0.6</b></label><input type="range" id="h-pi" min="0.05" max="0.9" step="0.05" value="0.6"></span>
       <button id="h-cek">500 örnek çek</button>
     </div>
     <div class="chart-wrap kwn"><canvas id="c-haus"></canvas></div>
@@ -513,7 +517,7 @@
       <div class="stat-card"><div class="label">IV medyanı</div><div class="value" id="h-iv">-</div></div>
       <div class="stat-card"><div class="label">Hausman: H₀ red oranı (%5)</div><div class="value" id="h-red">-</div></div>
     </div>
-    <div class="info-box"><strong>Deneyin:</strong> corr(X, u) = 0 yapın: iki tahminci de 1 civarında, Hausman testi yaklaşık %5 oranında reddeder (olması gerektiği gibi). İçselliği artırın: EKK kayar, IV merkezde kalır, test daha sık reddeder. Sonra aracı zayıflatın (0.1 gibi): IV dağılımı çok yayılır, test güç kaybeder. Zayıf araçla Hausman testi bilgi vermez.</div>
+    <div class="info-box"><strong>Deneyin:</strong> corr(X, u) = 0 yapın: iki tahminci de gerçek β civarında, Hausman testi yaklaşık %5 oranında reddeder (olması gerektiği gibi). İçselliği artırın: EKK kayar, IV merkezde kalır, test daha sık reddeder. Sonra aracı zayıflatın (0.1 gibi): IV dağılımı çok yayılır, test güç kaybeder. Zayıf araçla Hausman testi bilgi vermez.</div>
   </div>
 </section>
 
@@ -543,21 +547,22 @@
 <section class="section" id="s10">
   <div class="section-header"><span class="num">10</span>Ölçme Hataları</div>
   <div class="section-body">
+    <div class="controls"><span class="kayd"><label>Gerçek β<sub>1</sub> = <b id="oh-b1-l">0.65</b></label><input type="range" id="oh-b1" min="-1" max="2" step="0.05" value="0.65"></span></div>
     <div class="tabs"><button data-o="x" class="oh-b active">Bağımsız değişkende (X* = X + v)</button><button data-o="y" class="oh-b">Bağımlı değişkende (Y* = Y + w)</button></div>
     <div id="oh-x">
       <div class="eq c">Y = β₀ + β₁X* + (e − β₁v), &nbsp; Cov(X*, e − β₁v) = −β₁σ²<sub>v</sub> ≠ 0 &nbsp;⇒&nbsp; plim β̂₁ = β₁ <span class="frac"><span>σ²<sub>X</sub></span><span>σ²<sub>X</sub> + σ²<sub>v</sub></span></span></div>
-      <div class="controls"><label>σ²<sub>v</sub> / σ²<sub>X</sub> = <b id="ox-l">0.25</b></label><input type="range" id="ox" min="0" max="2" step="0.05" value="0.25"><button id="ox-cek">Yeni örnek</button></div>
+      <div class="controls"><span class="kayd"><label>σ²<sub>v</sub> / σ²<sub>X</sub> = <b id="ox-l">0.25</b></label><input type="range" id="ox" min="0" max="2" step="0.05" value="0.25"></span><button id="ox-cek">Yeni örnek</button></div>
     </div>
     <div id="oh-y" style="display:none">
       <div class="eq c">Y* = α + βX + (e + w) = α + βX + v, &nbsp; var(β̂) = <span class="frac"><span>σ²<sub>e</sub> + σ²<sub>w</sub></span><span>Σx²</span></span></div>
-      <div class="controls"><label>σ²<sub>w</sub> / σ²<sub>e</sub> = <b id="oy-l">1.0</b></label><input type="range" id="oy" min="0" max="4" step="0.25" value="1"><button id="oy-cek">Yeni örnek</button></div>
+      <div class="controls"><span class="kayd"><label>σ²<sub>w</sub> / σ²<sub>e</sub> = <b id="oy-l">1.0</b></label><input type="range" id="oy" min="0" max="4" step="0.25" value="1"></span><button id="oy-cek">Yeni örnek</button></div>
     </div>
     <div class="grid2">
       <div class="chart-wrap-sm"><canvas id="c-oh-sc"></canvas></div>
       <div class="chart-wrap-sm"><canvas id="c-oh-h"></canvas></div>
     </div>
     <div class="stat-grid">
-      <div class="stat-card"><div class="label">Gerçek β₁</div><div class="value">1.000</div></div>
+      <div class="stat-card"><div class="label">Gerçek β₁</div><div class="value" id="oh-gercek">0.650</div></div>
       <div class="stat-card"><div class="label">500 örnekte β̂₁ ortalaması</div><div class="value" id="oh-ort">-</div></div>
       <div class="stat-card"><div class="label">Teorik plim</div><div class="value" id="oh-plim">-</div></div>
       <div class="stat-card"><div class="label">β̂₁'in standart sapması</div><div class="value" id="oh-sd">-</div></div>
@@ -751,36 +756,36 @@ grupla([...document.querySelectorAll('#hata-tabs button')], b => hataGoster(+b.d
 
 // ---------- 3: dışlanan değişken ----------
 function disCek() {
-  const b3 = +$('d-b3').value, r = +$('d-r').value, n = 50, uz = [], ks = [];
-  $('d-b3-l').textContent = b3.toFixed(1); $('d-r-l').textContent = r.toFixed(1);
+  const b2 = +$('d-b2').value, b3 = +$('d-b3').value, r = +$('d-r').value, n = 50, uz = [], ks = [];
+  $('d-b2-l').textContent = b2.toFixed(2); $('d-gercek').textContent = f(b2); $('d-b3-l').textContent = b3.toFixed(1); $('d-r-l').textContent = r.toFixed(1);
   for (let s = 0; s < 500; s++) {
     const x2 = [], x3 = [], y = [];
-    for (let i = 0; i < n; i++) { const a = nrm(), c = r * a + Math.sqrt(1 - r * r) * nrm(); x2.push(a); x3.push(c); y.push(1 + a + b3 * c + nrm()); }
+    for (let i = 0; i < n; i++) { const a = nrm(), c = r * a + Math.sqrt(1 - r * r) * nrm(); x2.push(a); x3.push(c); y.push(1 + b2 * a + b3 * c + nrm()); }
     uz.push(egim2(y, x2, x3)); ks.push(egim1(y, x2));
   }
-  const lo = Math.min(-1.2, 1 - 2.2), hi = 3.2, H = hist([uz, ks], lo, hi, 44);
-  ciz('c-dis', histCfg(H.lab, [{ l: 'Doğru model β̂₂', d: H.h[0], c: C.teal }, { l: 'X₃ dışlanmış α̂₂', d: H.h[1], c: C.orange }], 'Tahmin edilen eğim (gerçek değer 1)'));
+  const lo = b2 - 2.2, hi = b2 + 2.2, H = hist([uz, ks], lo, hi, 44);
+  ciz('c-dis', histCfg(H.lab, [{ l: 'Doğru model β̂₂', d: H.h[0], c: C.teal }, { l: 'X₃ dışlanmış α̂₂', d: H.h[1], c: C.orange }], 'Tahmin edilen eğim (gerçek değer ' + f(b2, 2) + ')'));
   $('d-uz').textContent = f(ort(uz)); $('d-ks').textContent = f(ort(ks)); $('d-teo').textContent = (b3 * r >= 0 ? '+' : '') + f(b3 * r);
   ['pp', 'pn', 'np', 'nn'].forEach(k => $('is-' + k).classList.remove('on'));
   if (b3 !== 0 && r !== 0) $('is-' + (b3 > 0 ? 'p' : 'n') + (r > 0 ? 'p' : 'n')).classList.add('on');
 }
-['d-b3', 'd-r'].forEach(id => $(id).oninput = disCek); $('d-cek').onclick = disCek;
+['d-b2', 'd-b3', 'd-r'].forEach(id => $(id).oninput = disCek); $('d-cek').onclick = disCek;
 
 // ---------- 4: gereksiz değişken ----------
 function gerCek() {
-  const r = +$('g-r').value, n = 50, uz = [], ks = [];
-  $('g-r-l').textContent = r.toFixed(2);
+  const b2 = +$('g-b2').value, r = +$('g-r').value, n = 50, uz = [], ks = [];
+  $('g-b2-l').textContent = b2.toFixed(2); $('g-r-l').textContent = r.toFixed(2);
   for (let s = 0; s < 500; s++) {
     const x2 = [], x3 = [], y = [];
-    for (let i = 0; i < n; i++) { const a = nrm(), c = r * a + Math.sqrt(1 - r * r) * nrm(); x2.push(a); x3.push(c); y.push(1 + a + nrm()); }
+    for (let i = 0; i < n; i++) { const a = nrm(), c = r * a + Math.sqrt(1 - r * r) * nrm(); x2.push(a); x3.push(c); y.push(1 + b2 * a + nrm()); }
     uz.push(egim1(y, x2)); ks.push(egim2(y, x2, x3));
   }
-  const H = hist([uz, ks], 0, 2, 40);
-  ciz('c-gerek', histCfg(H.lab, [{ l: 'Doğru model', d: H.h[0], c: C.teal }, { l: 'X₃ gereksiz yere eklenmiş', d: H.h[1], c: C.purple }], 'α̂₂ (gerçek değer 1)'));
+  const H = hist([uz, ks], b2 - 1, b2 + 1, 40);
+  ciz('c-gerek', histCfg(H.lab, [{ l: 'Doğru model', d: H.h[0], c: C.teal }, { l: 'X₃ gereksiz yere eklenmiş', d: H.h[1], c: C.purple }], 'α̂₂ (gerçek değer ' + f(b2, 2) + ')'));
   $('g-uz').textContent = `${f(ort(uz), 2)} / ${f(sd(uz), 3)}`; $('g-ks').textContent = `${f(ort(ks), 2)} / ${f(sd(ks), 3)}`;
   $('g-oran').textContent = f(sd(ks) ** 2 / sd(uz) ** 2, 2); $('g-teo').textContent = f(1 / (1 - r * r), 2);
 }
-$('g-r').oninput = gerCek; $('g-cek').onclick = gerCek;
+['g-b2', 'g-r'].forEach(id => $(id).oninput = gerCek); $('g-cek').onclick = gerCek;
 const SONUC = ['', '<b>Gerekli değişken dışlanmış:</b> tahminciler sapmalı (r₂₃ ≠ 0 ise) ve tutarsız, standart hatalar geçersiz. Bu en tehlikeli hatadır.', '<b>Gereksiz değişken eklenmiş:</b> tahminciler sapmasız ve tutarlı, ama etkin değil (varyans büyür).', ''];
 document.querySelectorAll('.sonuc-tablo td[data-k]').forEach(td => td.onclick = () => {
   const k = +td.dataset.k; if (!SONUC[k]) return;
@@ -845,13 +850,13 @@ grupla([...document.querySelectorAll('.dw-b')], b => dwCiz(b.dataset.s)); dwCiz(
 
 // ---------- 8: Hausman simülasyonu ----------
 function hCek() {
-  const rho = +$('h-rho').value, pi = +$('h-pi').value, n = 100, E = [], V = []; let red = 0;
-  $('h-rho-l').textContent = rho.toFixed(1); $('h-pi-l').textContent = pi.toFixed(2);
+  const bt = +$('h-b').value, rho = +$('h-rho').value, pi = +$('h-pi').value, n = 100, E = [], V = []; let red = 0;
+  $('h-b-l').textContent = bt.toFixed(2); $('h-rho-l').textContent = rho.toFixed(1); $('h-pi-l').textContent = pi.toFixed(2);
   for (let s = 0; s < 500; s++) {
     const x = [], y = [], z = [];
     for (let i = 0; i < n; i++) {
       const zi = nrm(), u = nrm(), x0 = pi * zi + Math.sqrt(1 - pi * pi) * (rho * u + Math.sqrt(1 - rho * rho) * nrm());
-      z.push(zi); x.push(x0); y.push(1 + x0 + u);
+      z.push(zi); x.push(x0); y.push(1 + bt * x0 + u);
     }
     const mx = ort(x), my = ort(y), mz = ort(z); let sxy = 0, sxx = 0, szy = 0, szx = 0;
     for (let i = 0; i < n; i++) { sxy += (x[i] - mx) * (y[i] - my); sxx += (x[i] - mx) ** 2; szy += (z[i] - mz) * (y[i] - my); szx += (z[i] - mz) * (x[i] - mx); }
@@ -861,11 +866,11 @@ function hCek() {
     const m = (b1 - b0) ** 2 * r * r / (v0 * (1 - r * r)); if (m > 3.841) red++;
     E.push(b0); V.push(b1);
   }
-  const H = hist([E, V], -0.5, 2.5, 45);
-  ciz('c-haus', histCfg(H.lab, [{ l: 'EKK', d: H.h[0], c: C.orange }, { l: 'IV', d: H.h[1], c: C.teal }], 'Tahmin edilen β (gerçek değer 1)'));
+  const H = hist([E, V], bt - 1.5, bt + 1.5, 45);
+  ciz('c-haus', histCfg(H.lab, [{ l: 'EKK', d: H.h[0], c: C.orange }, { l: 'IV', d: H.h[1], c: C.teal }], 'Tahmin edilen β (gerçek değer ' + f(bt, 2) + ')'));
   $('h-ekk').textContent = f(ort(E)); $('h-iv').textContent = f(medyan(V)); $('h-red').textContent = '%' + (100 * red / 500).toFixed(1);
 }
-['h-rho', 'h-pi'].forEach(id => $(id).oninput = hCek); $('h-cek').onclick = hCek;
+['h-b', 'h-rho', 'h-pi'].forEach(id => $(id).oninput = hCek); $('h-cek').onclick = hCek;
 
 // ---------- 9: Hausman uygulaması ----------
 (function () {
@@ -896,27 +901,27 @@ grupla([...document.querySelectorAll('.ar-b')], b => ithCiz(b.dataset.a)); ithCi
 let ohMod = 'x';
 function ohCiz() {
   const n = 50, bs = []; let ornek = null;
-  const kx = +$('ox').value, ky = +$('oy').value; $('ox-l').textContent = kx.toFixed(2); $('oy-l').textContent = ky.toFixed(2);
+  const b1 = +$('oh-b1').value, kx = +$('ox').value, ky = +$('oy').value; $('oh-b1-l').textContent = b1.toFixed(2); $('oh-gercek').textContent = f(b1); $('ox-l').textContent = kx.toFixed(2); $('oy-l').textContent = ky.toFixed(2);
   for (let s = 0; s < 500; s++) {
     const xs = [], ys = [];
-    for (let i = 0; i < n; i++) { const X = nrm(), Y = 1 + X + nrm();
+    for (let i = 0; i < n; i++) { const X = nrm(), Y = 1 + b1 * X + nrm();
       if (ohMod === 'x') { xs.push(X + Math.sqrt(kx) * nrm()); ys.push(Y); } else { xs.push(X); ys.push(Y + Math.sqrt(ky) * nrm()); } }
     bs.push(egim1(ys, xs)); if (!s) ornek = [xs, ys];
   }
-  const plim = ohMod === 'x' ? 1 / (1 + kx) : 1;
+  const plim = ohMod === 'x' ? b1 / (1 + kx) : b1;
   const [xs, ys] = ornek, b = egim1(ys, xs), a = ort(ys) - b * ort(xs);
   ciz('c-oh-sc', { type: 'scatter', data: { datasets: [{ label: ohMod === 'x' ? 'Gözlenen (X*, Y)' : 'Gözlenen (X, Y*)', data: xs.map((v, i) => ({ x: v, y: ys[i] })), backgroundColor: C.gray },
-    { label: 'Gerçek doğru (β = 1)', type: 'line', data: [{ x: -3.5, y: -2.5 }, { x: 3.5, y: 4.5 }], borderColor: C.navy, pointRadius: 0, borderWidth: 2 },
+    { label: 'Gerçek doğru (β₁ = ' + f(b1, 2) + ')', type: 'line', data: [{ x: -3.5, y: 1 - 3.5 * b1 }, { x: 3.5, y: 1 + 3.5 * b1 }], borderColor: C.navy, pointRadius: 0, borderWidth: 2 },
     { label: 'EKK doğrusu', type: 'line', data: [{ x: -3.5, y: a - 3.5 * b }, { x: 3.5, y: a + 3.5 * b }], borderColor: C.orange, pointRadius: 0, borderWidth: 2, borderDash: [6, 4] }] },
-    options: { maintainAspectRatio: false, scales: { x: { min: -4, max: 4 }, y: { min: -5, max: 7 } } } });
-  const H = hist([bs], 0, 1.6, 40);
-  ciz('c-oh-h', histCfg(H.lab, [{ l: '500 örnekte β̂₁', d: H.h[0], c: C.teal }], 'β̂₁ (gerçek değer 1)'));
+    options: { maintainAspectRatio: false, scales: { x: { min: -4, max: 4 }, y: { min: -2 * Math.ceil((2 + 4 * Math.abs(b1)) / 2), max: 2 * Math.ceil((4 + 4 * Math.abs(b1)) / 2) } } } });
+  const H = hist([bs], Math.min(0, b1) - 0.6, Math.max(0, b1) + 0.6, 40);
+  ciz('c-oh-h', histCfg(H.lab, [{ l: '500 örnekte β̂₁', d: H.h[0], c: C.teal }], 'β̂₁ (gerçek değer ' + f(b1, 2) + ')'));
   $('oh-ort').textContent = f(ort(bs)); $('oh-plim').textContent = f(plim); $('oh-sd').textContent = f(sd(bs));
-  $('oh-not').innerHTML = ohMod === 'x' ? '<strong>X\'te ölçme hatası:</strong> EKK doğrusu gerçek doğrudan daha yatıktır; tahmin sıfıra doğru çekilir (zayıflama sapması, attenuation bias). Örneklem büyüse de düzelmez: tahminci tutarsızdır. Örnek: oran 0.25 ise plim β̂₁ = 0.8.'
-    : '<strong>Y\'de ölçme hatası:</strong> Ortalama yine 1: tahminci sapmasız ve tutarlıdır. Ölçme hatası büyüdükçe yalnızca dağılım genişler (varyans büyür).';
+  $('oh-not').innerHTML = ohMod === 'x' ? '<strong>X\'te ölçme hatası:</strong> EKK doğrusu gerçek doğrudan daha yatıktır; tahmin sıfıra doğru çekilir (zayıflama sapması, attenuation bias). Örneklem büyüse de düzelmez: tahminci tutarsızdır. Örnek: oran 0.25 ise plim β̂₁ = 0.8·β₁ = ' + f(0.8 * b1) + '.'
+    : '<strong>Y\'de ölçme hatası:</strong> Ortalama yine gerçek β₁ civarında: tahminci sapmasız ve tutarlıdır. Ölçme hatası büyüdükçe yalnızca dağılım genişler (varyans büyür).';
 }
 grupla([...document.querySelectorAll('.oh-b')], b => { ohMod = b.dataset.o; $('oh-x').style.display = ohMod === 'x' ? '' : 'none'; $('oh-y').style.display = ohMod === 'y' ? '' : 'none'; ohCiz(); });
-['ox', 'oy'].forEach(id => $(id).oninput = ohCiz); $('ox-cek').onclick = ohCiz; $('oy-cek').onclick = ohCiz;
+['oh-b1', 'ox', 'oy'].forEach(id => $(id).oninput = ohCiz); $('ox-cek').onclick = ohCiz; $('oy-cek').onclick = ohCiz;
 
 // ---------- 11: Leamer ----------
 const LEAMER = [
